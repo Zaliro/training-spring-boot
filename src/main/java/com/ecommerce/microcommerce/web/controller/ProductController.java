@@ -117,6 +117,11 @@ public class ProductController {
         return jacksonResult;
     }
 
+    @GetMapping(value = "/products/sorted")
+    public List<Product> getProductsListOrderedByName() {
+        return productDao.findAllByOrderByNom();
+    }
+
     // Pour les tests
     @GetMapping(value = "test/produits/{prix}")
     public List<Product> testeDeRequetes(@PathVariable int prix) {
