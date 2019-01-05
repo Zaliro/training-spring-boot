@@ -20,8 +20,8 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@Api(description = "API pour es opérations CRUD sur les produits.")
+// Products controller
+@Api(description = "Controller for CRUD operations on products entities")
 
 @RestController
 public class ProductController {
@@ -29,10 +29,11 @@ public class ProductController {
     @Autowired
     private ProductDao productDao;
 
-
-    //Récupérer la liste des produits
-    @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public MappingJacksonValue listeProduits() {
+    /**
+     * Récupérer la liste des produits (GET)
+     */
+    @GetMapping(value = "/products")
+    public MappingJacksonValue getProductsList() {
 
         Iterable<Product> produits = productDao.findAll();
 
@@ -45,10 +46,12 @@ public class ProductController {
         return produitsFiltres;
     }
 
-    //Récupérer un produit par son Id
-    @ApiOperation(value = "Récupère un produit grâce à son ID à condition que celui-ci soit en stock!")
+    /**
+     * Récupérer un porduit spécifique grâce à son identifiant (GET)
+     */
+    @ApiOperation(value = "Retrieves a product through its id")
     @GetMapping(value = "/products/{id}")
-    public Product afficherUnProduit(@PathVariable int id) {
+    public Product getProduct(@PathVariable int id) {
 
         Product produit = productDao.findById(id);
 
@@ -58,9 +61,11 @@ public class ProductController {
         return produit;
     }
 
-    //ajouter un produit
-    @PostMapping(value = "/products")
-    public ResponseEntity<Void> ajouterProduit(@Valid @RequestBody Product product) {
+    /**
+     * Ajouter un produit (PUT)
+     */
+    @PutMapping(value = "/products")
+    public ResponseEntity<Void> addProduct(@Valid @RequestBody Product product) {
 
         Product productAdded = productDao.save(product);
 
@@ -76,20 +81,24 @@ public class ProductController {
         return ResponseEntity.created(location).build();
     }
 
+    /**
+     * Supprimer un produit (DELETE)
+     */
     @DeleteMapping(value = "/products/{id}")
-    public void supprimerProduit(@PathVariable int id) {
-
+    public void deleteProduct(@PathVariable int id) {
         productDao.delete(id);
     }
 
-    @PutMapping(value = "/products")
-    public void updateProduit(@RequestBody Product product) {
-
+    /**
+     * Mettre à jour un produit (POST)
+     */
+    @PostMapping(value = "/products")
+    public void updateProduct(@RequestBody Product product) {
         productDao.save(product);
     }
 
-    @GetMapping(value = "/productsMargin")
-    public MappingJacksonValue computeProductsMargin() {
+    @GetMapping(value = "/products/margin")
+    public MappingJacksonValue getProductsMarginsList() {
 
         Iterable<Product> products = productDao.findAll();
         ArrayList<AbstractMap.SimpleEntry<Product, Integer>> productsMargin = new ArrayList<>();
@@ -108,10 +117,9 @@ public class ProductController {
         return jacksonResult;
     }
 
-    //Pour les tests
+    // Pour les tests
     @GetMapping(value = "test/produits/{prix}")
     public List<Product> testeDeRequetes(@PathVariable int prix) {
-
         return productDao.chercherUnProduitCher(400);
     }
 }
