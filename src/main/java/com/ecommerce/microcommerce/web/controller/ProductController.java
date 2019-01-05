@@ -2,6 +2,7 @@ package com.ecommerce.microcommerce.web.controller;
 
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
+import com.ecommerce.microcommerce.web.exceptions.FreeProductException;
 import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -94,6 +95,10 @@ public class ProductController {
      */
     @PostMapping(value = "/products")
     public void updateProduct(@RequestBody Product product) {
+
+        if (product.getPrix() <= 0)
+            throw new FreeProductException("Price must be greater than zero.");
+
         productDao.save(product);
     }
 
