@@ -331,6 +331,58 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Swagger",
+			"item": [
+				{
+					"name": "IsSwaggerRunning",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9090/v2/api-docs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"v2",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IsSwaggerUIRunning",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9090/swagger-ui.html",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"swagger-ui.html"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
