@@ -22,8 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -150,6 +149,62 @@ public class MicrocommerceApplicationTests {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void addProductWithPriceZero_Should_ThrowError() throws Exception {
+
+        Product newProduct = new Product(1, "NewProduct", 0, 666);
+
+        given(productDao.save(Mockito.any(Product.class)))
+                .willReturn(newProduct);
+
+        Gson gsonBuilder = new Gson();
+        String newProductAsJson = gsonBuilder.toJson(newProduct);
+
+        mockMvc.perform(
+                put("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newProductAsJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    //endregion
+
+    //region UpdateProduct
+    @Test
+    public void updateProduct_Should_ReturnOk() throws Exception {
+
+        Product newProduct = new Product(1, "NewProduct", 666, 666);
+
+        given(productDao.save(Mockito.any(Product.class)))
+                .willReturn(newProduct);
+
+        Gson gsonBuilder = new Gson();
+        String newProductAsJson = gsonBuilder.toJson(newProduct);
+
+        mockMvc.perform(
+                post("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newProductAsJson))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateProductWithPriceZero_Should_ThrowError() throws Exception {
+
+        Product newProduct = new Product(1, "NewProduct", 0, 666);
+
+        given(productDao.save(Mockito.any(Product.class)))
+                .willReturn(newProduct);
+
+        Gson gsonBuilder = new Gson();
+        String newProductAsJson = gsonBuilder.toJson(newProduct);
+
+        mockMvc.perform(
+                post("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newProductAsJson))
+                .andExpect(status().isUnprocessableEntity());
+    }
     //endregion
 
     //endregion
