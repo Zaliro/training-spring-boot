@@ -4,6 +4,7 @@ import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
 import com.ecommerce.microcommerce.web.controller.ProductController;
 import com.google.gson.Gson;
+import net.minidev.json.JSONArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -166,7 +167,6 @@ public class MicrocommerceApplicationTests {
                         .content(newProductAsJson))
                 .andExpect(status().isBadRequest());
     }
-
     //endregion
 
     //region UpdateProduct
@@ -204,6 +204,38 @@ public class MicrocommerceApplicationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(newProductAsJson))
                 .andExpect(status().isUnprocessableEntity());
+    }
+    //endregion
+
+    //endregion
+
+    //region Specific Operations
+
+    //region ProductsMargin
+    @Test
+    public void getProductsMargin_Should_ReturnProductMarginAsJson() throws Exception {
+
+        Product product1 = new Product(1, "Product1", 100, 10);
+        Product product2 = new Product(2, "Product2", 200, 50);
+
+        List<Product> productsList = new ArrayList<>();
+        productsList.add(product1);
+        productsList.add(product2);
+
+        given(productDao.findAll()).willReturn(productsList);
+
+        JSONArray product1ExpectedMargin = new JSONArray();
+        product1ExpectedMargin.add(90);
+
+        JSONArray product2ExpectedMargin = new JSONArray();
+        product2ExpectedMargin.add(150);
+
+        mockMvc.perform(get("/products/margin")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].*", is(product1ExpectedMargin)))
+                .andExpect(jsonPath("$[1].*", is(product2ExpectedMargin)));
     }
     //endregion
 
