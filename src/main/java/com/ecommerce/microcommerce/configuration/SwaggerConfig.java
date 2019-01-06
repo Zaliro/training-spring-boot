@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ecommerce.microcommerce.web"))
-                .paths(PathSelectors.regex("/Produits.*"))
+                .paths(PathSelectors.regex("/products.*"))
                 .build()
                 .apiInfo(apiInfo());
     }

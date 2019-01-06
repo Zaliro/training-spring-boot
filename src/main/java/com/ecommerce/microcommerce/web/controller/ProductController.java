@@ -33,6 +33,7 @@ public class ProductController {
     /**
      * Récupérer la liste des produits (GET)
      */
+    @ApiOperation(value = "Return the list of products")
     @GetMapping(value = "/products")
     public MappingJacksonValue getProductsList() {
 
@@ -65,6 +66,7 @@ public class ProductController {
     /**
      * Ajouter un produit (PUT)
      */
+    @ApiOperation(value = "Add a product")
     @PutMapping(value = "/products")
     public ResponseEntity<Void> addProduct(@Valid @RequestBody Product product) {
 
@@ -85,6 +87,7 @@ public class ProductController {
     /**
      * Supprimer un produit (DELETE)
      */
+    @ApiOperation(value = "Delete a product")
     @DeleteMapping(value = "/products/{id}")
     public void deleteProduct(@PathVariable int id) {
         productDao.delete(id);
@@ -93,6 +96,7 @@ public class ProductController {
     /**
      * Mettre à jour un produit (POST)
      */
+    @ApiOperation(value = "Update a product")
     @PostMapping(value = "/products")
     public void updateProduct(@RequestBody Product product) {
 
@@ -102,6 +106,7 @@ public class ProductController {
         productDao.save(product);
     }
 
+    @ApiOperation(value = "Return the list of products margins")
     @GetMapping(value = "/products/margin")
     public MappingJacksonValue getProductsMarginsList() {
 
@@ -122,6 +127,7 @@ public class ProductController {
         return jacksonResult;
     }
 
+    @ApiOperation(value = "Return the list of products ordered by name")
     @GetMapping(value = "/products/sorted")
     public List<Product> getProductsListOrderedByName() {
         return productDao.findAllByOrderByNom();
